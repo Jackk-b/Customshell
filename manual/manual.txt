@@ -1,0 +1,110 @@
+Manual for Customshell
+
+=========================Internal Commands=========================
+
+- cd <dir>: Changes the directory to <dir> if arguement is given, 
+            otherwise prints the current directory
+- clr: Clears the screen
+- dir: Lists the contents of the current directory
+- environ: Lists all the environment strings
+- echo <args>: Prints out all arguments
+- pause: Pauses the shell until the enter key is pressed
+- quit: Quits the shell
+
+To use any of the above commands, type the command (and arguments) 
+and press enter, the command will be executed accordingly
+
+===================================================================
+
+=============How i/o redirection works in Customshell==============
+
+-----For internal and external commands-----
+
+* Note the loop for checking internal and external commands is 
+  essentially the same apart from the if statement which checks 
+  for the "&" symbol in the external_command function
+
+- Firstly we store the existing input/output using 
+  dup(STDIN_FILEN0); / dup(STDOUT_FILEN0), this is so that we can 
+  reinstate it after we use another source of input/output
+
+- Next we initialize a file pointer
+
+- Next we check that there are arguments present, if not we return
+  from function
+
+- Next we have a loop, this loop iterates over every element in the
+  arguments to check for redirection symbols (when checking in 
+  external commands we additionally check for the “&”, symbol to 
+  signify background execution)
+
+- For each of the 3 symbols {“<”, “>”, “>>”} , 
+  we then do the following:
+
+  - Use strcmp to identify if the symbol matches the argument
+  - We then check position [i + 1] to see if there is a string 
+    present to prevent error when checking the file, if not we return
+  - We then use access to check that firstly the file exists, and 
+    secondly that we have the correct permission (read/write), if not return
+  - We then use freopen to open the file as stdin/stdout
+  - We then use the file pointer to check if an error has occurred 
+  - We then replace the redirection symbol and file name with NULL
+
+- We then check if the command supplied is internal by looping 
+  through and checking if the argument supplied matches any 
+  function we have, if so, execute the function and then reinstate
+  the standard input/output 
+
+- If not we then pass is to the external_command(args); function 
+  to execute it, after we reinstate standard input/output
+
+===================================================================
+
+========================Program environment========================
+
+-----Some notes on program environment/environment variables-----
+
+- The shell variable is set to the path of the customshell
+
+- Before executing external commands, we set the parent variable 
+
+- In functions such as change_directory(), we update the PWD 
+  environment variable
+
+- We can also print out all environment variables using out 
+  internal function environment_variables()
+
+===================================================================
+
+===========Background execution vs foreground execution============
+
+- When looping through the arguments to check for file redirection
+  in the external_command(), function we also check for the “&”
+  symbol which signifies that the user wants to run the command in
+  the background
+
+- If detected, we then update the value of the dont_wait boolean 
+  variable to true
+
+- To execute the external command, we do the following
+
+- Fork the process, then check the output
+
+- If -1, then fork has failed, we return
+
+- If 0, then fork has succeeded
+
+- We then set the parent environment variable
+
+- We use exec to execute the command
+
+- If we have gotten to code past the exec command, there has been a
+  problem, and it has failed
+
+- Then the value of the dont_wait variable defines whether to wait
+  or not
+
+- A great way to see this in action is to use the sleep command and
+  see the program execute in the background or foreground
+
+===================================================================

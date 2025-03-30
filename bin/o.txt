@@ -1,0 +1,9 @@
+o
+total 88
+drwxr-xr-x@ 6 jack  staff    192 Mar 21 16:18 .
+drwxr-xr-x@ 6 jack  staff    192 Mar 21 16:18 ..
+-rw-r--r--@ 1 jack  staff      0 Mar 19 17:50 .t
+-rwxr-xr-x@ 1 jack  staff  35288 Mar 21 16:18 customshell
+-rw-r--r--@ 1 jack  staff    189 Mar 21 12:40 makefile
+-rw-r--r--@ 1 jack  staff      2 Mar 21 16:18 o.txt
+/Users/jack/Library/Mobile Documents/com~apple~CloudDocs/College/Year 2, Semester 2/CSC1021, Labs/2025-customshell-23314343-jackburke/Stage2/bin ==> /Users/jack/Library/Mobile Documents/com~apple~CloudDocs/College/Year 2, Semester 2/CSC1021, Labs/2025-customshell-23314343-jackburke/Stage2/bin ==> [3J[H[2J
